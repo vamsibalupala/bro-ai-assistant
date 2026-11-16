@@ -148,4 +148,4 @@ const server=http.createServer(async(req,res)=>{
     return json(res,404,{ok:false,message:'Not found'});
   } catch(error) { return json(res,500,{ok:false,message:error.message}); }
 });
-server.listen(PORT,()=>console.log(`JARVIS backend listening on ${PORT}`));
+server.listen(PORT,()=>console.log(`Bro AI backend listening on ${PORT}`));

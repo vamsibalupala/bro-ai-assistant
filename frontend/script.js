@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
         message.className = type === "user" ? "msg user" : "msg";
 
         const senderElement = document.createElement("strong");
-        const displaySender = sender === "J.A.R.V.I.S" ? "KALKI" : sender;
+        const displaySender = (sender === "J.A.R.V.I.S" || sender === "KALKI") ? "Bro" : sender;
         senderElement.textContent = `${displaySender}: `;
 
         message.appendChild(senderElement);
@@ -155,8 +155,8 @@ document.addEventListener("DOMContentLoaded", () => {
         ]);
         memory.forEach((item) => {
             if (transientStatus.has(String(item.text || "").trim())) return;
-            const sender = item.sender === "J.A.R.V.I.S" ? "KALKI" : item.sender;
-            showMessage(sender || "KALKI", item.text || "", item.type || "ai", false);
+            const sender = (item.sender === "J.A.R.V.I.S" || item.sender === "KALKI") ? "Bro" : item.sender;
+            showMessage(sender || "Bro", item.text || "", item.type || "ai", false);
         });
     }
 
@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify({
                         systemInstruction: {
                             parts: [{
-                                text: `You are KALKI, a warm personal assistant who speaks naturally like a helpful friend, not a robotic list generator. Acknowledge statements, show empathy for emotions, ask at most one relevant follow-up when useful, clarify incomplete requests, and offer one sensible next step. Use Telugu/Teluglish naturally when the user does. Never invent calendar, task, weather, connector, or memory facts. Never claim durable memory beyond the conversation supplied. External actions remain explicit and confirmation-gated; do not send, schedule, or act in the background. ${interaction?.guidance?.tone || "Match the user’s language naturally."} ${interaction?.guidance?.style === "detailed" ? "Give a helpful explanation." : "Prefer concise, human replies."} Recent-context available: ${Boolean(interaction?.signals?.continuityAvailable)}.`
+                                text: `You are Bro, a smart, loyal, and proactive personal AI assistant for your user's Android phone. You speak naturally like a sharp and helpful best friend / companion, not a robotic list generator. You are warm, encouraging, sharp, and concise. You understand English and Telugu/Teluglish fluently. Acknowledge what the user says, show emotional empathy, offer helpful suggestions and next steps, and keep answers punchy and conversational. Never invent facts. When the user asks you to do something, explain what you're doing clearly and casually like a true 'Bro'. ${interaction?.guidance?.tone || "Match the user’s language naturally."} ${interaction?.guidance?.style === "detailed" ? "Give a helpful explanation." : "Prefer concise, human replies."} Recent-context available: ${Boolean(interaction?.signals?.continuityAvailable)}.`
                             }]
                         },
                         contents
@@ -627,7 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         if (!getApiKey()) {
-            showMessage("KALKI", "I need your Gemini API key before I can generate an AI reply. Settings is open so you can add it locally; no request was sent to Google.", "ai");
+            showMessage("Bro", "I need your Gemini API key before I can generate an AI reply. Settings is open so you can add it locally; no request was sent to Google.", "ai");
             openApiKeySettings();
             if (voiceConversationActive) stopVoiceConversation(true, "Voice chat paused. Add your AI key in Settings to continue.");
             else finishVoiceTurn();
@@ -640,9 +640,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const interaction = await analyzeInteraction(userText);
-            if (interaction?.clarification?.question) { showMessage("KALKI", interaction.clarification.question, "ai"); return; }
+            if (interaction?.clarification?.question) { showMessage("Bro", interaction.clarification.question, "ai"); return; }
             const reply = await askGemini(interaction);
-            showMessage("KALKI", reply, "ai");
+            showMessage("Bro", reply, "ai");
         } catch (error) {
             console.error("JARVIS AI Error:", error);
             showMessage("SYSTEM", error.message, "ai");
@@ -727,7 +727,7 @@ document.addEventListener("DOMContentLoaded", () => {
         voiceTurnPending = false;
         if ("speechSynthesis" in window && "SpeechSynthesisUtterance" in window) {
             setVoiceModeStatus("Voice chat is on. Listening after the greeting…", true);
-            speak("Hi, I’m KALKI. I’m listening.", null);
+            speak("Hi, I’m Bro. What’s up? I’m listening.", null);
         } else {
             setVoiceModeStatus("Voice chat is on. Speak after the microphone starts.", true);
             beginVoiceListening();
@@ -782,7 +782,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!text || !messageInput || !voiceConversationActive) return;
             messageInput.value = text;
             voiceTurnPending = true;
-            setVoiceModeStatus("Heard you. KALKI is thinking…", true);
+            setVoiceModeStatus("Heard you. Bro is thinking…", true);
             sendMessage();
         };
 
@@ -810,7 +810,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.addEventListener("visibilitychange", () => {
             if (document.hidden && voiceConversationActive) {
-                stopVoiceConversation(false, "Voice chat stopped because KALKI is in the background.");
+                stopVoiceConversation(false, "Voice chat stopped because Bro is in the background.");
             }
         });
         window.addEventListener("pagehide", () => {
@@ -833,7 +833,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const subject = shared.title ? `\nTitle: ${shared.title}` : "";
             const body = shared.text ? `\nContent: ${shared.text}` : "\nContent: Shared file content is available for review in the originating app.";
             if (messageInput) { messageInput.value = `${action} this shared content.${subject}${body}\n\n[Draft — review and press Send to approve]`; messageInput.focus(); }
-            showMessage("KALKI", `${action} draft prepared. Review it in the composer; no action was sent or executed.`, "ai");
+            showMessage("Bro", `${action} draft prepared. Review it in the composer; no action was sent or executed.`, "ai");
         }));
         window.addEventListener("kalki-share", (event) => {
             shared = event.detail || {};
@@ -889,7 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ttsVoiceSelect.replaceChildren(...options);
         if (saved === "auto") {
             ttsVoiceSelect.value = "auto";
-            if (ttsVoiceHelp) ttsVoiceHelp.textContent = "KALKI will follow the browser’s language-based voice choice.";
+            if (ttsVoiceHelp) ttsVoiceHelp.textContent = "Bro will follow the browser’s language-based voice choice.";
             return;
         }
 
@@ -902,10 +902,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (chosen) {
             ttsVoiceSelect.value = voiceOptionValue(chosen);
             try { localStorage.setItem(TTS_VOICE_KEY, ttsVoiceSelect.value); } catch (_) { /* Keep this choice for this page only. */ }
-            if (ttsVoiceHelp) ttsVoiceHelp.textContent = `KALKI will keep using ${chosen.name} (${chosen.lang}) on this device. Choose a Telugu voice if available for Telugu pronunciation.`;
+            if (ttsVoiceHelp) ttsVoiceHelp.textContent = `Bro will keep using ${chosen.name} (${chosen.lang}) on this device. Choose a Telugu voice if available for Telugu pronunciation.`;
         } else {
             ttsVoiceSelect.value = "auto";
-            if (ttsVoiceHelp) ttsVoiceHelp.textContent = "No device voice list is available yet; KALKI will use your browser’s default voice.";
+            if (ttsVoiceHelp) ttsVoiceHelp.textContent = "No device voice list is available yet; Bro will use your browser’s default voice.";
         }
     }
 
@@ -929,8 +929,8 @@ document.addEventListener("DOMContentLoaded", () => {
             try { localStorage.setItem(TTS_VOICE_KEY, ttsVoiceSelect.value); } catch (_) { /* Use this page's selection only. */ }
             const voice = getSelectedTtsVoice(window.speechSynthesis?.getVoices?.() || []);
             if (ttsVoiceHelp) ttsVoiceHelp.textContent = voice
-                ? `KALKI will keep using ${voice.name} (${voice.lang}) on this device.`
-                : "KALKI will follow the browser’s language-based voice choice.";
+                ? `Bro will keep using ${voice.name} (${voice.lang}) on this device.`
+                : "Bro will follow the browser’s language-based voice choice.";
         });
         if ("speechSynthesis" in window) {
             populateTtsVoiceOptions();

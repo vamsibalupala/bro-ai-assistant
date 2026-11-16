@@ -38,12 +38,12 @@ public final class WakeWordService extends Service {
     private static final long RESTART_DELAY_MS = 55L;
     private static final long RETRY_DELAY_MS = 300L;
     private static final long DUPLICATE_CALLBACK_WINDOW_MS = 650L;
-    private static final String ACK = "చెప్పండి Boss";
+    private static final String ACK = "చెప్పు Bro, I'm listening!";
     private static final Pattern WAKE = Pattern.compile(
-            "^(?:hey|hai|hi)\\s+(?:kalki|kalkee|kalky|jarvis|jaarvis|jarv(?:i|e)s|jervis)\\b[,:;.!?\\s]*(.*)$",
+            "^(?:hey|hai|hi|yo)?\\s*(?:bro|brother|bhayya|కల్కి|బ్రో|jarvis)\\b[,:;.!?\\s]*(.*)$",
             Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
     private static final Pattern STOP = Pattern.compile(
-            "^(?:stop|స్టాప్)\\s+(?:kalki|కల్కి|jarvis|జార్విస్)\\b.*$",
+            "^(?:stop|స్టాప్|quiet)\\s*(?:bro|బ్రో)?\\b.*$",
             Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 
     private enum Mode { WAKE, COMMAND }
@@ -138,24 +138,24 @@ public final class WakeWordService extends Service {
         if (command != null && !command.isEmpty()) { if (isStop(command)) stopWithSpeech(); else emit(command); }
         else mode = Mode.COMMAND;
     }
-    private boolean isStop(String value) { return STOP.matcher(value.trim()).matches() || value.trim().equalsIgnoreCase("stop kalki"); }
+    private boolean isStop(String value) { return STOP.matcher(value.trim()).matches() || value.trim().equalsIgnoreCase("stop bro") || value.trim().equalsIgnoreCase("stop kalki"); }
     private void emit(String command) {
         if (command == null || command.trim().isEmpty()) return;
         mode = Mode.WAKE; sendBroadcast(new Intent(ACTION_COMMAND).setPackage(getPackageName()).putExtra(EXTRA_COMMAND, command.trim()));
     }
-    private void speak(String value) { if (ttsReady && tts != null) tts.speak(value, TextToSpeech.QUEUE_FLUSH, null, "kalki-ack"); else pendingSpeech = value; }
-    private void stopWithSpeech() { speak("ఆపుతున్నాను Boss"); stopping = true; handler.removeCallbacksAndMessages(null); stopSelf(); }
+    private void speak(String value) { if (ttsReady && tts != null) tts.speak(value, TextToSpeech.QUEUE_FLUSH, null, "bro-ack"); else pendingSpeech = value; }
+    private void stopWithSpeech() { speak("ఆపుతున్నాను Bro"); stopping = true; handler.removeCallbacksAndMessages(null); stopSelf(); }
 
     private Notification notification() {
         Intent stop = new Intent(this, WakeWordService.class).setAction(ACTION_STOP);
         PendingIntent pi = PendingIntent.getService(this, 1, stop, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         return new Notification.Builder(this, CHANNEL).setSmallIcon(R.drawable.kalki_logo)
-                .setContentTitle("KALKI wake word active")
-                .setContentText("Listening in foreground · say “Hey KALKI” or “Hey Jarvis”")
+                .setContentTitle("Bro wake word active")
+                .setContentText("Listening in foreground · say “Hey Bro”")
                 .setOngoing(true).setCategory(Notification.CATEGORY_SERVICE)
-                .addAction(new Notification.Action.Builder(null, "Stop KALKI", pi).build()).build();
+                .addAction(new Notification.Action.Builder(null, "Stop Bro", pi).build()).build();
     }
-    private void createChannel() { ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).createNotificationChannel(new NotificationChannel(CHANNEL, "KALKI microphone", NotificationManager.IMPORTANCE_LOW)); }
+    private void createChannel() { ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).createNotificationChannel(new NotificationChannel(CHANNEL, "Bro microphone", NotificationManager.IMPORTANCE_LOW)); }
     @Override public int onStartCommand(Intent intent, int flags, int id) {
         if (ACTION_STOP.equals(intent == null ? null : intent.getAction())) { stopping = true; handler.removeCallbacksAndMessages(null); stopSelf(); }
         return START_STICKY;
