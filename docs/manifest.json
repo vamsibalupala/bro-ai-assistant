@@ -1,0 +1,22 @@
+{
+  "name": "Bro AI Assistant",
+  "short_name": "Bro",
+  "description": "Your personal AI companion for Android",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0d12",
+  "theme_color": "#0b0d12",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "1789578396977-559ec457.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "1789578396977-559ec457.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
